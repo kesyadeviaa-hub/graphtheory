@@ -1,8 +1,9 @@
+# graph_visualization.py
 import streamlit as st
 import networkx as nx
 import plotly.graph_objects as go
 
-def main():  # <-- wrap kode ke dalam main()
+def main():
     st.set_page_config(page_title="Graph Visualization", page_icon="(∩^o^)⊃━☆", layout="centered")
     st.title("Graph Visualization")
 
@@ -39,10 +40,12 @@ def main():  # <-- wrap kode ke dalam main()
         # Node data
         node_x = []
         node_y = []
+        node_colors = []
         for node in G.nodes():
             x, y = pos[node]
             node_x.append(x)
             node_y.append(y)
+            node_colors.append(G.degree(node))
 
         node_trace = go.Scatter(
             x=node_x,
@@ -54,7 +57,7 @@ def main():  # <-- wrap kode ke dalam main()
             marker=dict(
                 showscale=True,
                 colorscale=[[0, "#ffffff"], [1, "#ef8fc7"]],
-                color=[G.degree(n) for n in G.nodes()],
+                color=node_colors,
                 size=20,
                 colorbar=dict(
                     thickness=10,
@@ -85,6 +88,7 @@ def main():  # <-- wrap kode ke dalam main()
 
         st.plotly_chart(fig, use_container_width=True)
 
+        # Success message
         st.markdown(
             f"""
             <div style="
